@@ -17,7 +17,7 @@ void main() {
 	int N;
 	cout << " a b N =  ";
 	cin >> a >> b >> N;
-	anal = C * (sin(c * b) - sin(a * b)) / c;
+	anal = C * (sin(c * b) - sin(c * a)) / c;
 	dt = (b - a) / N;
 	num = 0;
 	for (int i = 0; i < N; i++) {
