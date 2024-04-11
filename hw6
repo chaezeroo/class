@@ -1,0 +1,93 @@
+#include <iostream>
+#include <fstream>
+#include <cmath>
+using namespace std;
+
+float getLength(int eumpyo) {
+	float T;
+	if (eumpyo == 3) T = 1.8;
+	else if (eumpyo == 4) T = 0.6;
+	else if (eumpyo == 8) T = 0.3;
+	return T;
+}
+
+float getfrequency(char jupasu) {
+	float F;
+	if (jupasu == 'g')    F = 196.00;
+	else if (jupasu == 'a') F = 220.00;
+	else if (jupasu == 'b') F = 246.94;
+	else if (jupasu == 'C') F = 261.63;
+	else if (jupasu == 'D') F = 293.66;
+	else if (jupasu == 'E') F = 329.63;
+	else if (jupasu == 'F') F = 349.23;
+	return F;
+}
+
+float getAmplitude(int kugi) {
+	int K;
+	if (kugi == 10) K = 10000;
+	else if (kugi == 5) K = 5000;
+	return K;
+}
+
+int main() {
+
+	// Sprint 1
+	ifstream xx("Beatles-LetItBe-wav_30s.wav", ios::binary | ios::in);
+	if (!xx) return 999;
+	char header[44];
+
+	xx.read(header, 44);
+	int* sampleRate = (int*)(header + 24);
+	cout << "   sampleRate = " << *sampleRate << endl;
+	short* n;   n = (short*)(header + 22);  cout << *n << endl; // numChannels
+	int* fs;   fs = (int*)(header + 24);  cout << *fs << endl;  // sampleRate
+	int* b;   b = (int*)(header + 28);  cout << *b << endl;     //  byteRate
+
+	// Sprint 2
+	int N = fs[0] * 10; // samples for 10 seconds
+	short* data;
+	data = new short[N]; // allocate memory for 10 seconds mono
+	*n = 1;   // stereo --> mono
+	*b = n[0] * fs[0] * sizeof(short); // byte rate change
+
+	xx.read((char*)data, N * sizeof(short));
+
+	ofstream yy("my.wav", ios::binary | ios::out);
+	if (!yy) return 666;
+	yy.write(header, 44 * sizeof(char));
+	yy.write((char*)data, N * sizeof(short));
+	yy.close();
+
+
+	// Sprint 3
+	const float pi = 3.141592;
+	if (!yy) return 999;
+	int aa, eu, ss, a;
+	float T, f;
+	char hh;
+	short* data1;
+	data1 = new short[N];
+	ofstream ff("clock.wav", ios::binary | ios::out);
+	if (!ff) return 666;
+	ff.write(header, 100 * sizeof(char));
+
+	//Sprint 4
+	ifstream zz("piece.txt");
+	zz >> aa;
+	for (int i = 0; i < aa; i++) {
+		zz >> eu >> hh >> ss;
+		f = getfrequency(hh);
+		a = getAmplitude(ss);
+		T = getLength(eu);
+		for (int k = 0; k < fs[0] * T; k++) {
+			float dt = 1. / fs[0];
+			data1[k] = (short)(a * sin(2.0 * pi * f * k * dt));
+		}
+		cout << eu << " " << hh << " " << ss << endl;
+		ff.write((char*)data1, fs[0] * sizeof(short) * T);
+	}
+
+	ff.close();
+	return 1;
+}
