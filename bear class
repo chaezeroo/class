@@ -1,0 +1,36 @@
+class Bear {
+  //constructor
+  Bear(int xx, int yy, int dd) {x = xx; y = yy; d = dd; vx = 2; vy = 2;  }
+  
+  Bear() {
+    x = random(300, 800);
+    y = random(300, 350);
+    d = random(5, 8);
+    vx = random(-4, 4);
+    vy = random(-4, 4);
+    k = 60;
+  }
+  
+  // member data
+  float x, y, d, vx, vy, k;
+  
+  // member function
+  void update() {
+    y += vy;
+    x += vx;
+    if (y > height || y < 0) vy = -vy;
+    if (x < 0 || x > width) vx = -vx;
+  }
+  void show() {
+    fill(139, 69, 19);
+    circle(x - d*5, y - d*5, d*6);
+    circle(x + d*5, y - d*5, d*6);
+    circle(x, y, d*15);
+    fill(0);
+    circle(x - d*2, y - d*2, d);
+    circle(x + d*2, y - d*2, d);
+    ellipse(x, y, d*2, d);
+    fill(255, 0, 0);
+    arc(x, y + d*2, d*6, d*2, 0, PI);
+  }
+}
