@@ -1,0 +1,82 @@
+covy cv;
+Bear [] Be;
+lion [] li;
+Bear be2;
+lion li2;
+int delay =0, goal =0, delay2 = 0;
+
+
+void spaceship(float x, float y, float r) {
+  strokeWeight(1);
+  fill(90, 90, 255);
+  circle(x, y, r*10);
+  fill(250, 250, 0);
+  circle(x+r*4.5, y+r*4, r*3);
+  circle(x-r*4.5, y+r*4, r*3);
+  circle(x, y+r*4.5, r*3);
+  fill(100, 100, 100);
+  ellipse(x, y+r*2.5, r*15, r*5);
+}
+
+void showSuccess() {
+  goal--;
+  fill(0, 0, 250);
+  textSize(100);
+  textAlign(CENTER);
+  text("Succcess\nGood Bye!", 500, 200);
+
+}
+void fail() {
+  delay --;
+  fill(250, 0, 0);
+  textSize(100);
+  textAlign(CENTER);
+  text("Failed...", 510, 280);
+}
+
+
+void setup() {
+  size(1000, 500);
+  cv = new covy(950, 450, 50);
+  Be = new Bear[2];
+  li = new lion[2];
+  
+  be2 = new Bear(300, 300, 4, 60);
+  li2 = new lion(300, 300, 4, 60);
+  
+  for (int i = 0; i<2; i++) {
+    Be[i] = new Bear();
+    li[i] = new lion();
+  }
+}
+
+void draw() {
+  background(30, 30, 70);
+  spaceship(100, 70, 13);
+  if (delay != 0)    fail();
+  else if (goal != 0) showSuccess();
+
+  cv.covy_show();
+  li2.update();
+  be2.update();
+  li2.show();
+  be2.show();
+
+  if(delay == 0) delay = cv.fail(be2.x, be2.y, be2.k);
+  if(delay == 0) delay = cv.fail(li2.x, li2.y, li2.k);
+  
+  for (int i =0; i<2; i++) {
+    Be[i].update();
+    li[i].update();
+    Be[i].show();
+    li[i].show();
+
+    if (delay == 0)   delay = cv.fail(Be[i].x, Be[i].y, Be[i].k);
+    if (delay == 0)  delay = cv.fail(li[i].x, li[i].y, li[i].k);
+    if (goal == 0)  goal = cv.escape();
+  }
+}
+
+void keyPressed() {
+  cv.covy_keyMove();
+}
