@@ -1,0 +1,157 @@
+class shape_move {
+    shape_move(float xx, float yy, float dd){
+    x = xx;
+    y = yy;
+    d = dd;
+  }
+  
+  shape_move(float xx, float yy, float dd, float k){
+    x = xx;
+    y = yy;
+    d = dd;
+    vx = random(-2,2);
+    vy = random(-2,2);
+  }
+  
+  shape_move() {
+    x = random(300, 800);
+    y = random(300, 350);
+    d = random(5, 8);
+    vx = random(-4, 4);
+    vy = random(-4, 4);
+    k = 60;
+  }
+  float x, y, d, vx, vy, k;
+
+  void update() {
+    y += vy;
+    x += vx;
+    if (y > height || y < 0) vy = -vy;
+    if (x < 0 || x > width) vx = -vx;
+  }
+}
+
+
+
+
+class Bear extends shape_move {
+  Bear(float xx, float yy, float dd, float kk) {
+    super(xx, yy, dd, kk);
+  }
+
+  Bear() {
+    super();
+  }
+  void show() {
+    fill(139, 69, 19);
+    circle(x - d*5, y - d*5, d*6);
+    circle(x + d*5, y - d*5, d*6);
+    circle(x, y, d*15);
+    fill(0);
+    circle(x - d*2, y - d*2, d);
+    circle(x + d*2, y - d*2, d);
+    ellipse(x, y, d*2, d);
+    fill(255, 0, 0);
+    arc(x, y + d*2, d*6, d*2, 0, PI);
+  }
+}
+
+
+class covy extends shape_move {
+  covy (float xx, float yy, float dd) {
+    super(xx, yy, dd);
+  }
+
+  //member function
+  void covy_show() {
+    strokeWeight(3);  // 캐릭터 선 굵기
+    stroke(0, 0, 0);  // 캐릭터 선 색상
+    fill(255, 153, 255); // 캐릭터 색상
+    rotation(x+d/4, y+d*0.375, 0.2, d*0.375, 40);       // 3. 오른쪽 다리
+    rotation(x-d/2, y+d*0.125, 3/4, d*0.35, 30);      // 4. 왼쪽 팔
+    circle(x, y, d);      // 5. 몸통
+    circle(x+d/2, y-d/8, d/3);      // 6. 오른쪽 팔
+    rotation(x- d/4, y+d*0.375, 3.3/4, d*0.4, 20);  // 7. 왼쪽 발
+
+    // 8. 뺨
+    fill(255, 51, 51);
+    ellipse(x-d/4, y, d*0.18, d*0.08);
+    ellipse(x+d/4, y, d*0.18, d*0.08);
+
+    // 9. 눈
+    fill(0, 0, 0);
+    ellipse(x - d*0.1, y-d/5, d*0.1, d*0.25);
+    ellipse(x + d*0.1, y-d/5, d*0.1, d*0.25);
+    fill(255, 255, 255);
+    ellipse(x - d*0.1, y-d*0.25, d*0.08, d*0.12);
+    ellipse(x + d*0.1, y-d*0.25, d*0.08, d*0.12);
+
+    // 10. 입
+    fill(255, 0, 0);
+    arc(x, y, d*0.125, d*0.19, 0, PI);
+    line(x-d*0.05, y, x+d*0.05, y);
+  }
+  void rotation(float a, float b, float angle, float h, float w) {    // 3,4번의 도형 회전 함수(지역, 전역 변수 사용)
+    translate(a, b);
+    rotate(PI * angle);
+    ellipse(0, 0, w, h);
+    resetMatrix(); // 초기화
+  }
+  int fail(float xx, float yy, float kk) {
+    float dx = x - xx;
+    float dy = y - yy;
+    float s = sqrt(dx*dx + dy*dy);
+    if (s < kk) {
+      x = 900;
+      y = 450;
+      return 100;
+    } else return 0;
+  }
+
+  int escape() {
+    if (x > 15 && x < 165 && y > 25 && y < 125) {
+      x = 1500;
+      y = 900;
+      return 100;
+    } else return 0;
+  }
+
+  void covy_keyMove() {
+    if (key == 'd') x +=15;
+    else if (key == 'a') x -=15;
+    else if (key == 's') y +=15;
+    else if (key == 'w') y -=15;
+    else if ( x > width-25) x = width-25;
+    else if ( x < 0) x = 0;
+    else if ( y > height -40) y = height-40;
+    else if (y < 0) y = 0;
+  }
+}
+
+class lion extends shape_move {
+  lion(float xx, float yy, float dd, float kk) {
+    super(xx, yy, dd, kk);
+  }
+
+  lion() {
+    super();
+  }
+
+  void show() {
+    strokeWeight(5);
+    fill(250, 200, 0);
+    circle(x-d*7, y-d*7.5, d*5);
+    circle(x+d*7, y-d*7.5, d*5);
+    circle(x, y, d*20);
+    line(x-d*6, y-d*4, x-d*3.5, y-d*4);
+    line(x+d*6, y-d*4, x+d*3.5, y-d*4);
+    fill(0);
+    circle(x-d*4.5, y-d*1.5, d);
+    circle(x+d*4.5, y-d*1.5, d);
+    triangle(x-d*0.5, y+d*0.5, x+d*0.5, y+d*0.5, x, y+d*1.5);
+    fill(255);
+    circle(x-d*1.5, y+d*2.5, d*3.5);
+    circle(x+d*1.5, y+d*2.5, d*3.5);
+  }
+}
+
