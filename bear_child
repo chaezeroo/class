@@ -1,0 +1,21 @@
+class Bear extends shape_move {
+  Bear(float xx, float yy, float dd, float kk) {
+    super(xx, yy, dd, kk);
+  }
+
+  Bear() {
+    super();
+  }
+  void show() {
+    fill(139, 69, 19);
+    circle(x - d*5, y - d*5, d*6);
+    circle(x + d*5, y - d*5, d*6);
+    circle(x, y, d*15);
+    fill(0);
+    circle(x - d*2, y - d*2, d);
+    circle(x + d*2, y - d*2, d);
+    ellipse(x, y, d*2, d);
+    fill(255, 0, 0);
+    arc(x, y + d*2, d*6, d*2, 0, PI);
+  }
+}
